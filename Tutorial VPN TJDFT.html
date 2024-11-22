@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial VPN TJDFT - Ubuntu 24.04</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --text-color: #2c3e50;
+            --code-bg: #f8f9fa;
+            --border-color: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f6fa;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent-color);
+            font-size: 2.5em;
+            margin-bottom: 40px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .author-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .author-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            position: relative;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .explanation {
+            background-color: #e1f5fe;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .key-command {
+            background-color: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid #ddd;
+        }
+
+        .code-block {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .copy-button:hover {
+            opacity: 1;
+        }
+
+        .bash-prompt {
+            color: #16a085;
+            user-select: none;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .important {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: "•";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .section-intro {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tutorial VPN TJDFT - Ubuntu 24.04</h1>
+
+        <div class="section-intro">
+            <p>Este tutorial foi criado para ajudar usuários do Ubuntu 24.04 a configurar e utilizar a VPN do TJDFT de forma simples e eficiente. O guia inclui todos os passos necessários, desde a instalação das dependências até a criação de um atalho personalizado no sistema.</p>
+        </div>
+
+        <h2>Pré-requisitos e Instalação</h2>
+        <div class="explanation">
+            Antes de começar, precisamos garantir que o sistema está atualizado e com todas as dependências necessárias instaladas.
+        </div>
+
+        <h3>Atualização do Sistema</h3>
+        <div class="explanation">
+            Estes comandos atualizam a lista de pacotes e instalam as atualizações disponíveis no sistema.
+        </div>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> sudo apt update
+<span class="bash-prompt">$</span> sudo apt upgrade -y</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <h3>Instalação de Dependências</h3>
+        <div class="explanation">
+            Instalação do OpenSSL e pip3, necessários para o funcionamento da VPN.
+        </div>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> sudo apt install -y openssl python3-pip
+<span class="bash-prompt">$</span> pip3 install gp-saml-gui</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <h2>Configuração da VPN</h2>
+
+        <h3>1. Preparar Diretório e Arquivos</h3>
+        <div class="explanation">
+            Criamos um diretório específico para armazenar os arquivos da VPN.
+        </div>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> mkdir -p ~/vpn</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <h3>2. Configuração do OpenSSL</h3>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> nano ~/vpn/openssl.cnf</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <div class="code-block">
+            <pre>openssl_conf = openssl_init
+
+[openssl_init]
+ssl_conf = ssl_sect
+
+[ssl_sect]
+system_default = system_default_sect
+
+[system_default_sect]
+Options = UnsafeLegacyRenegotiation</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="explanation">
+          Salvar o arquivo (Ctrl+O, depois Enter). Para Fechar (Ctrl+X).
+      </div>
+        <h3>3. Criar Script de Conexão VPN</h3>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> nano ~/vpn/vpn_tjdft.sh</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <div class="code-block">
+            <pre>#!/bin/bash
+
+# Configuração do OpenSSL
+export OPENSSL_CONF=~/vpn/openssl.cnf
+
+# Função para conectar à VPN
+conectar_vpn() {
+    local gateway=$1
+    echo "Conectando ao gateway: $gateway"
+    gp-saml-gui --gateway --clientos=Linux "$gateway" -S
+}
+
+# Gateways principais
+gateways=(
+    "rpv-dev.tjdft.jus.br"
+)
+
+# Conectar a cada gateway
+for gateway in "${gateways[@]}"; do
+    conectar_vpn "$gateway"
+done</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <h3>4. Tornar Script Executável</h3>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> chmod +x ~/vpn/vpn_tjdft.sh</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <h2>Criação do Atalho no Ubuntu</h2>
+
+        <h3>5. Baixar Ícone (Opcional)</h3>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> wget -O ~/vpn/tjdft-icon.png https://www.tjdft.jus.br/favicon.ico</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <h3>6. Criar Arquivo .desktop</h3>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> nano ~/.local/share/applications/vpn-tjdft.desktop</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <div class="code-block">
+            <pre>[Desktop Entry]
+Name=VPN TJDFT
+Comment=Conectar VPN do TJDFT
+Exec=/home/seu_usuario/vpn/vpn_tjdft.sh
+Icon=/home/seu_usuario/vpn/tjdft-icon.png
+Terminal=true
+Type=Application
+Categories=Network;</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <div class="explanation">
+          Lembre-se de mudar "home/seu_usuario/" pelo caminho correto.
+        </div>    
+
+        <h3>7. Configurar Permissões</h3>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> chmod +x ~/.local/share/applications/vpn-tjdft.desktop
+<span class="bash-prompt">$</span> chmod +x ~/vpn/tjdft-icon.png</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <h3>8. Atualizar Cache de Ícones</h3>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> update-desktop-database ~/.local/share/applications</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <h2>Uso</h2>
+        <ul>
+            <li><strong>Método 1:</strong> Execute o script diretamente:
+                <div class="code-block">
+                    <pre><span class="bash-prompt">$</span> ~/vpn/vpn_tjdft.sh</pre>
+                    <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+                </div>
+            </li>
+            <li><strong>Método 2:</strong> Use o atalho criado no menu do Ubuntu</li>
+        </ul>
+
+        <h2>Solução de Problemas</h2>
+        <div class="code-block">
+            <pre><span class="bash-prompt">$</span> which gp-saml-gui
+<span class="bash-prompt">$</span> pip3 install --upgrade gp-saml-gui</pre>
+            <button class="copy-button" onclick="copyCode(this)">Copiar</button>
+        </div>
+
+        <div class="important">
+            <h3>Notas Importantes:</h3>
+            <ul>
+                <li>Mantenha suas credenciais seguras</li>
+                <li>Verifique os gateways antes de usar</li>
+                <li>Use em ambiente seguro</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <h3>Referências:</h3>
+            <ul>
+                <li><a href="https://github.com/dlenski/gp-saml-gui" target="_blank">Repositório oficial gp-saml-gui</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(button) {
+            const pre = button.previousElementSibling;
+            const code = pre.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copiado!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
