@@ -26,6 +26,9 @@ Instalação do OpenSSL e pip3, necessários para o funcionamento da VPN:
 
 ```bash
 sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal main universe"
+```
+
+```bash
 sudo apt update && sudo apt install -y python3 python3-pip python3-gi python3-gi-cairo gir1.2-gtk-3.0 python3-setuptools "gir1.2-webkit2-4.*" libgirepository1.0-dev libcairo2-dev libffi-dev build-essential pipx
 ```
 
@@ -36,9 +39,13 @@ Criamos um diretório específico para armazenar os arquivos da VPN:
 
 ```bash
 mkdir -p ~/vpn
+
 cd ~/vpn
+
 python3 -m venv vpn-env
+
 source ~/vpn/vpn-env/bin/activate
+
 pip install https://github.com/dlenski/gp-saml-gui/archive/master.zip
 ```
 
@@ -99,6 +106,10 @@ for gateway in "${gateways[@]}"; do
     conectar_vpn "$gateway"
 done
 
+# Manter o terminal aberto para que a conexão não seja finalizada
+echo "Conexão estabelecida. Pressione Ctrl+C para sair."
+exec $SHELL
+
 # Desativar o ambiente virtual (opcional)
 deactivate
 ```
@@ -139,6 +150,7 @@ Categories=Network;
 
 ```bash
 $ chmod +x ~/.local/share/applications/vpn-tjdft.desktop
+
 $ chmod +x ~/vpn/tjdft-icon.png
 ```
 
