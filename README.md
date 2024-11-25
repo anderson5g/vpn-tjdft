@@ -17,8 +17,7 @@ Antes de começar, precisamos garantir que o sistema está atualizado e com toda
 Estes comandos atualizam a lista de pacotes e instalam as atualizações disponíveis no sistema:
 
 ```bash
-sudo apt update
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 ```
 
 ## Instalação de Dependências
@@ -26,8 +25,8 @@ sudo apt upgrade -y
 Instalação do OpenSSL e pip3, necessários para o funcionamento da VPN:
 
 ```bash
-sudo apt install -y openssl python3-pip
-pip3 install gp-saml-gui
+sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal main universe"
+sudo apt update && sudo apt install -y python3 python3-pip python3-gi python3-gi-cairo gir1.2-gtk-3.0 python3-setuptools "gir1.2-webkit2-4.*" libgirepository1.0-dev libcairo2-dev libffi-dev build-essential pipx
 ```
 
 ## Configuração da VPN
@@ -37,6 +36,10 @@ Criamos um diretório específico para armazenar os arquivos da VPN:
 
 ```bash
 mkdir -p ~/vpn
+cd ~/vpn
+python3 -m venv vpn-env
+source ~/vpn/vpn-env/bin/activate
+pip install https://github.com/dlenski/gp-saml-gui/archive/master.zip
 ```
 
 2. **Configuração do OpenSSL**  
@@ -73,6 +76,9 @@ $ nano ~/vpn/vpn_tjdft.sh
 ```bash
 #!/bin/bash
 
+# Ativar o ambiente virtual
+source ~/vpn/vpn-env/bin/activate
+
 # Configuração do OpenSSL
 export OPENSSL_CONF=~/vpn/openssl.cnf
 
@@ -92,6 +98,9 @@ gateways=(
 for gateway in "${gateways[@]}"; do
     conectar_vpn "$gateway"
 done
+
+# Desativar o ambiente virtual (opcional)
+deactivate
 ```
 
 4. **Tornar Script Executável**  
@@ -118,7 +127,7 @@ $ nano ~/.local/share/applications/vpn-tjdft.desktop
 [Desktop Entry]
 Name=VPN TJDFT
 Comment=Conectar VPN do TJDFT
-Exec=/home/seu_usuario/vpn/vpn_tjdft.sh
+Exec=gnome-terminal -- /home/seu_usuario/vpn/vpn_tjdft.sh
 Icon=/home/seu_usuario/vpn/tjdft-icon.png
 Terminal=true
 Type=Application
@@ -149,12 +158,6 @@ $ ~/vpn/vpn_tjdft.sh
 
 - **Método 2:** Use o atalho criado no menu do Ubuntu 
 
-## Solução de Problemas
-
-```bash
-$ which gp-saml-gui
-$ pip3 install --upgrade gp-saml-gui
-```
 
 > **Notas Importantes:** Mantenha suas credenciais seguras, Verifique os gateways antes de usar, Use em ambiente seguro.
 
